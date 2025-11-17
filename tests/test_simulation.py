@@ -33,7 +33,7 @@ def test_model_initialization():
                        if state == CellState.INITIAL)
     assert initial_count == 100  # 10x10 grid
     
-    print("✓ Model initialization test passed")
+    print(" Model initialization test passed")
 
 
 def test_cell_state_transitions():
@@ -54,7 +54,7 @@ def test_cell_state_transitions():
     model.set_cell_state(test_pos, CellState.GROWING)
     assert model.get_cell_state(test_pos) == CellState.GROWING
     
-    print("✓ Cell state transition test passed")
+    print(" Cell state transition test passed")
 
 
 def test_message_bus_communication():
@@ -87,7 +87,7 @@ def test_message_bus_communication():
     assert len(received_messages) == 1
     assert received_messages[0].payload["test"] == "data"
     
-    print("✓ Message bus communication test passed")
+    print(" Message bus communication test passed")
 
 
 def test_full_simulation_cycle():
@@ -155,7 +155,7 @@ def test_full_simulation_cycle():
     assert model.master_agent is not None
     assert len(model.worker_agents) == 5
     
-    print(f"\n✓ Full simulation cycle test passed")
+    print(f"\n Full simulation cycle test passed")
     print(f"  Final state: {model.harvested_count} crops harvested")
     print(f"  Ploughed: {final_ploughed}, Sown: {final_sown}, "
           f"Growing: {final_growing}, Healthy: {final_healthy}")
@@ -179,7 +179,7 @@ def test_agent_task_execution():
     # Verify model is functioning
     assert model.step_count == 10
     
-    print("✓ Agent task execution test passed")
+    print(" Agent task execution test passed")
 
 
 def run_all_tests():
