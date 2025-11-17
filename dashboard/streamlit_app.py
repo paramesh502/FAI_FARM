@@ -349,24 +349,24 @@ def main():
         col1, col2, col3 = st.columns(3)
         with col1:
             st.markdown('<div class="section-header">Multi-Agent System</div>', unsafe_allow_html=True)
-            st.write("• Master Agent coordination")
-            st.write("• 5 specialized worker agents")
-            st.write("• Autonomous task execution")
-            st.write("• Message-based communication")
+            st.write("Master Agent coordination")
+            st.write("5 specialized worker agents")
+            st.write("Autonomous task execution")
+            st.write("Message-based communication")
         
         with col2:
             st.markdown('<div class="section-header">AI Features</div>', unsafe_allow_html=True)
-            st.write("• PDDL planning engine")
-            st.write("• CSP-based scheduling")
-            st.write("• Rule-based reasoning")
-            st.write("• Machine learning classifier")
+            st.write("PDDL planning engine")
+            st.write("CSP-based scheduling")
+            st.write("Rule-based reasoning")
+            st.write("Machine learning classifier")
         
         with col3:
             st.markdown('<div class="section-header">Real-Time Monitoring</div>', unsafe_allow_html=True)
-            st.write("• Live grid visualization")
-            st.write("• Performance metrics tracking")
-            st.write("• Agent status monitoring")
-            st.write("• Data export capabilities")
+            st.write("Live grid visualization")
+            st.write("Performance metrics tracking")
+            st.write("Agent status monitoring")
+            st.write("Data export capabilities")
     
     else:
         # Weather and Yield Prediction Section
@@ -378,18 +378,15 @@ def main():
         yield_pred = st.session_state.model.calculate_yield_prediction()
         
         with col1:
-            temp_color = "🌡️" if weather['temperature'] < 30 else "🔥"
-            st.metric(f"{temp_color} Temperature", f"{weather['temperature']:.1f}°C")
+            st.metric("Temperature", f"{weather['temperature']:.1f}°C")
         with col2:
-            humidity_color = "💧" if weather['humidity'] > 60 else "☀️"
-            st.metric(f"{humidity_color} Humidity", f"{weather['humidity']:.0f}%")
+            st.metric("Humidity", f"{weather['humidity']:.0f}%")
         with col3:
-            rain_icon = "🌧️" if weather['rain_forecast_24h'] else "☀️"
-            st.metric(f"{rain_icon} Rain Forecast", "Yes" if weather['rain_forecast_24h'] else "No")
+            st.metric("Rain Forecast", "Yes" if weather['rain_forecast_24h'] else "No")
         with col4:
-            st.metric("🌾 Estimated Yield", f"{yield_pred['estimated_yield']:.1f} units")
+            st.metric("Estimated Yield", f"{yield_pred['estimated_yield']:.1f} units")
         with col5:
-            st.metric("📅 Days to Harvest", yield_pred['days_to_harvest'])
+            st.metric("Days to Harvest", yield_pred['days_to_harvest'])
         
         st.markdown("---")
         
@@ -432,17 +429,17 @@ def main():
             st.markdown("**Cell State Legend:**")
             col1, col2, col3, col4 = st.columns(4)
             with col1:
-                st.markdown("• Initial (Gray)")
-                st.markdown("• Ploughed (Brown)")
+                st.markdown("Initial (Gray)")
+                st.markdown("Ploughed (Brown)")
             with col2:
-                st.markdown("• Sown (Tan)")
-                st.markdown("• Growing (Light Green)")
+                st.markdown("Sown (Tan)")
+                st.markdown("Growing (Light Green)")
             with col3:
-                st.markdown("• Need Water (Yellow)")
-                st.markdown("• Healthy (Dark Green)")
+                st.markdown("Need Water (Yellow)")
+                st.markdown("Healthy (Dark Green)")
             with col4:
-                st.markdown("• Diseased (Red)")
-                st.markdown("• Ready to Harvest (Orange)")
+                st.markdown("Diseased (Red)")
+                st.markdown("Ready to Harvest (Orange)")
         
         with tab2:
             st.markdown('<div class="section-header">Performance Metrics Over Time</div>', unsafe_allow_html=True)
@@ -503,18 +500,18 @@ def main():
             col1, col2, col3 = st.columns(3)
             
             with col1:
-                st.metric("💧 Water Stressed Crops", 
+                st.metric("Water Stressed Crops", 
                          f"{stress['water_stressed_count']} ({stress['water_stress_percentage']}%)",
                          delta=None,
                          delta_color="inverse")
             with col2:
-                st.metric("🌡️ Temperature Stressed", 
+                st.metric("Temperature Stressed", 
                          f"{stress['temperature_stressed_count']} ({stress['temperature_stress_percentage']}%)",
                          delta=None,
                          delta_color="inverse")
             with col3:
                 health_score = stress['overall_health_score']
-                health_status = "🟢 Excellent" if health_score > 80 else "🟡 Fair" if health_score > 60 else "🔴 Poor"
+                health_status = "Excellent" if health_score > 80 else "Fair" if health_score > 60 else "Poor"
                 st.metric("Overall Health Score", f"{health_score:.1f}%", 
                          delta=None)
                 st.markdown(f"**Status:** {health_status}")
@@ -553,22 +550,22 @@ def main():
             recommendations = []
             
             if stress['water_stress_percentage'] > 30:
-                recommendations.append("⚠️ **High water stress detected** - Increase irrigation frequency")
+                recommendations.append("**High water stress detected** - Increase irrigation frequency")
             
             if stress['temperature_stress_percentage'] > 20:
-                recommendations.append("🔥 **Temperature stress alert** - Consider shade nets or cooling measures")
+                recommendations.append("**Temperature stress alert** - Consider shade nets or cooling measures")
             
             if weather['rain_forecast_24h']:
-                recommendations.append("🌧️ **Rain forecasted** - Irrigation automatically delayed to conserve water")
+                recommendations.append("**Rain forecasted** - Irrigation automatically delayed to conserve water")
             
             if weather['temperature'] > 32:
-                recommendations.append("🌡️ **High temperature warning** - Monitor crops closely for heat stress")
+                recommendations.append("**High temperature warning** - Monitor crops closely for heat stress")
             
             if yield_pred['at_risk_crops'] > 5:
-                recommendations.append(f"🦠 **Disease alert** - {yield_pred['at_risk_crops']} crops at risk, apply treatment")
+                recommendations.append(f"**Disease alert** - {yield_pred['at_risk_crops']} crops at risk, apply treatment")
             
             if not recommendations:
-                st.success("✅ All systems operating normally. No immediate actions required.")
+                st.success("All systems operating normally. No immediate actions required.")
             else:
                 for rec in recommendations:
                     st.warning(rec)
@@ -580,17 +577,17 @@ def main():
             
             with col1:
                 st.markdown("**Current Status**")
-                st.write(f"• Healthy Crops: {yield_pred['healthy_crops']}")
-                st.write(f"• At-Risk Crops: {yield_pred['at_risk_crops']}")
-                st.write(f"• Already Harvested: {yield_pred['current_harvest']}")
-                st.write(f"• Average Growth: {yield_pred['average_growth_progress']}%")
+                st.write(f"Healthy Crops: {yield_pred['healthy_crops']}")
+                st.write(f"At-Risk Crops: {yield_pred['at_risk_crops']}")
+                st.write(f"Already Harvested: {yield_pred['current_harvest']}")
+                st.write(f"Average Growth: {yield_pred['average_growth_progress']}%")
             
             with col2:
                 st.markdown("**Forecast**")
-                st.write(f"• Estimated Yield: {yield_pred['estimated_yield']:.2f} units")
-                st.write(f"• Potential Total: {yield_pred['potential_yield']:.2f} units")
-                st.write(f"• Days to Harvest: {yield_pred['days_to_harvest']}")
-                st.write(f"• Expected Step: {yield_pred['estimated_harvest_step']}")
+                st.write(f"Estimated Yield: {yield_pred['estimated_yield']:.2f} units")
+                st.write(f"Potential Total: {yield_pred['potential_yield']:.2f} units")
+                st.write(f"Days to Harvest: {yield_pred['days_to_harvest']}")
+                st.write(f"Expected Step: {yield_pred['estimated_harvest_step']}")
         
         with tab5:
             st.markdown('<div class="section-header">Advanced AI Features</div>', unsafe_allow_html=True)
