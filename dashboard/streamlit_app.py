@@ -369,6 +369,10 @@ def main():
             st.write("Data export capabilities")
     
     else:
+        # Get weather and yield data first
+        weather = st.session_state.model.weather
+        yield_pred = st.session_state.model.calculate_yield_prediction()
+        
         # Weather and Yield Prediction Section
         st.markdown('<div class="section-header">Weather & Yield Forecast</div>', unsafe_allow_html=True)
         
@@ -416,9 +420,6 @@ Wind Speed Update:
             """)
         
         col1, col2, col3, col4, col5 = st.columns(5)
-        
-        weather = st.session_state.model.weather
-        yield_pred = st.session_state.model.calculate_yield_prediction()
         
         with col1:
             st.metric("Temperature", f"{weather['temperature']:.1f}°C")
