@@ -469,21 +469,21 @@ Wind Speed Update:
             grid_plot = create_farm_grid_plot(st.session_state.model)
             st.plotly_chart(grid_plot, use_container_width=True)
             
-            # Legend
+            # Legend with color indicators
             st.markdown("**Cell State Legend:**")
             col1, col2, col3, col4 = st.columns(4)
             with col1:
-                st.markdown("Initial (Gray)")
-                st.markdown("Ploughed (Brown)")
+                st.markdown('<span style="display:inline-block;width:12px;height:12px;background-color:#E8E8E8;border:1px solid #999;margin-right:8px;"></span>Initial', unsafe_allow_html=True)
+                st.markdown('<span style="display:inline-block;width:12px;height:12px;background-color:#8B4513;border:1px solid #666;margin-right:8px;"></span>Ploughed', unsafe_allow_html=True)
             with col2:
-                st.markdown("Sown (Tan)")
-                st.markdown("Growing (Light Green)")
+                st.markdown('<span style="display:inline-block;width:12px;height:12px;background-color:#D2B48C;border:1px solid #999;margin-right:8px;"></span>Sown', unsafe_allow_html=True)
+                st.markdown('<span style="display:inline-block;width:12px;height:12px;background-color:#90EE90;border:1px solid #6B6;margin-right:8px;"></span>Growing', unsafe_allow_html=True)
             with col3:
-                st.markdown("Need Water (Yellow)")
-                st.markdown("Healthy (Dark Green)")
+                st.markdown('<span style="display:inline-block;width:12px;height:12px;background-color:#FFD700;border:1px solid #CC9;margin-right:8px;"></span>Need Water', unsafe_allow_html=True)
+                st.markdown('<span style="display:inline-block;width:12px;height:12px;background-color:#228B22;border:1px solid #163;margin-right:8px;"></span>Healthy', unsafe_allow_html=True)
             with col4:
-                st.markdown("Diseased (Red)")
-                st.markdown("Ready to Harvest (Orange)")
+                st.markdown('<span style="display:inline-block;width:12px;height:12px;background-color:#DC143C;border:1px solid #A00;margin-right:8px;"></span>Diseased', unsafe_allow_html=True)
+                st.markdown('<span style="display:inline-block;width:12px;height:12px;background-color:#FFA500;border:1px solid #C80;margin-right:8px;"></span>Ready to Harvest', unsafe_allow_html=True)
         
         with tab2:
             st.markdown('<div class="section-header">Performance Metrics Over Time</div>', unsafe_allow_html=True)
