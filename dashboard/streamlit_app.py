@@ -372,6 +372,49 @@ def main():
         # Weather and Yield Prediction Section
         st.markdown('<div class="section-header">Weather & Yield Forecast</div>', unsafe_allow_html=True)
         
+        # Weather Calculation Explanation
+        with st.expander("📊 Weather Simulation Methodology", expanded=False):
+            st.markdown("### How Weather Data is Generated")
+            st.markdown("""
+            **Weather is simulated internally** (not from external API) with realistic variations:
+            """)
+            
+            st.code("""
+Initial Values (at start):
+  Temperature: 25.0°C
+  Humidity: 60.0%
+  Rain Forecast: False (No rain)
+  Wind Speed: 10.0 km/h
+
+Update Frequency: Every 5 simulation steps
+
+Temperature Update:
+  New = Current + random(-2, +2)°C
+  Range: 20-35°C
+  
+Humidity Update:
+  New = Current + random(-5, +5)%
+  Range: 40-90%
+  
+Rain Forecast:
+  Probability: 10% chance per update
+  Random check each update
+  
+Wind Speed Update:
+  New = Current + random(-3, +3) km/h
+  Range: 5-40 km/h
+            """)
+            
+            st.markdown(f"""
+            **Current Weather State:**
+            - Temperature: {weather['temperature']:.1f}°C (Range: 20-35°C)
+            - Humidity: {weather['humidity']:.0f}% (Range: 40-90%)
+            - Rain Forecast: {'Yes' if weather['rain_forecast_24h'] else 'No'} (10% probability)
+            - Wind Speed: {weather['wind_speed']:.1f} km/h (Range: 5-40 km/h)
+            - Last Update: Step {(st.session_state.model.step_count // 5) * 5}
+            - Next Update: Step {((st.session_state.model.step_count // 5) + 1) * 5}
+            """)
+        
         col1, col2, col3, col4, col5 = st.columns(5)
         
         weather = st.session_state.model.weather
@@ -495,6 +538,63 @@ def main():
             st.markdown('<div class="section-header">Crop Stress Monitoring</div>', unsafe_allow_html=True)
             
             stress = st.session_state.model.get_stress_indicators()
+            weather = st.session_state.model.weather
+            
+            # Calculation Methodology Section
+            with st.expander("📊 Calculation Methodology - How Numbers Are Computed", expanded=False):
+                st.markdown("### Stress Detection Criteria")
+                
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.markdown("**Water Stress Detection:**")
+                    st.code("""
+Condition: water_level < 0.3 (30%)
+
+For each crop cell:
+  IF water_level < 0.3:
+    Count as water-stressed
+    
+Percentage = (water_stressed / total_crops) × 100
+                    """)
+                
+                with col_b:
+                    st.markdown("**Temperature Stress Detection:**")
+                    st.code("""
+Condition: temperature > 32°C AND water_level < 0.5
+
+For each crop cell:
+  IF temperature > 32 AND water_level < 0.5:
+    Count as temperature-stressed
+    
+Percentage = (temp_stressed / total_crops) × 100
+                    """)
+                
+                st.markdown("**Overall Health Score:**")
+                st.code("""
+Formula: ((total_crops - stressed_crops) / total_crops) × 100
+
+Where:
+  stressed_crops = water_stressed + temperature_stressed
+  
+Interpretation:
+  80-100% = Excellent
+  60-79%  = Fair
+  40-59%  = Poor
+  <40%    = Critical
+                """)
+                
+                st.markdown("**Current Calculation Example:**")
+                st.code(f"""
+Total Crops: {stress['total_crops']}
+Water Stressed: {stress['water_stressed_count']} crops (water < 0.3)
+Temperature Stressed: {stress['temperature_stressed_count']} crops (temp > 32°C + water < 0.5)
+
+Water Stress % = ({stress['water_stressed_count']} / {stress['total_crops']}) × 100 = {stress['water_stress_percentage']}%
+Temp Stress %  = ({stress['temperature_stressed_count']} / {stress['total_crops']}) × 100 = {stress['temperature_stress_percentage']}%
+
+Total Stressed = {stress['water_stressed_count']} + {stress['temperature_stressed_count']} = {stress['water_stressed_count'] + stress['temperature_stressed_count']}
+Health Score = (({stress['total_crops']} - {stress['water_stressed_count'] + stress['temperature_stressed_count']}) / {stress['total_crops']}) × 100 = {stress['overall_health_score']}%
+                """)
             
             # Stress overview
             col1, col2, col3 = st.columns(3)
@@ -572,6 +672,54 @@ def main():
             
             # Yield prediction details
             st.markdown('<div class="section-header">Yield Prediction Details</div>', unsafe_allow_html=True)
+            
+            # Yield Calculation Methodology
+            with st.expander("📊 Yield Calculation Methodology", expanded=False):
+                st.markdown("### How Yield is Estimated")
+                
+                # Get actual counts for explanation
+                growing = st.session_state.model.count_cells_by_state(CellState.GROWING)
+                healthy = st.session_state.model.count_cells_by_state(CellState.HEALTHY)
+                diseased = st.session_state.model.count_cells_by_state(CellState.DISEASED)
+                ready = st.session_state.model.count_cells_by_state(CellState.READY_TO_HARVEST)
+                
+                st.markdown("**Yield Factors by Crop State:**")
+                st.code("""
+Healthy Crops:  1.0 yield per cell (100%)
+Growing Crops:  0.7 yield per cell (70%)
+Diseased Crops: 0.3 yield per cell (30%)
+Ready Crops:    1.0 yield per cell (100%)
+                """)
+                
+                st.markdown("**Current Calculation:**")
+                st.code(f"""
+Crop Counts:
+  Healthy:  {healthy} crops
+  Growing:  {growing} crops
+  Diseased: {diseased} crops
+  Ready:    {ready} crops
+
+Yield Calculation:
+  Healthy:  {healthy} × 1.0 = {healthy * 1.0:.2f} units
+  Growing:  {growing} × 0.7 = {growing * 0.7:.2f} units
+  Diseased: {diseased} × 0.3 = {diseased * 0.3:.2f} units
+  Ready:    {ready} × 1.0 = {ready * 1.0:.2f} units
+  
+Total Estimated Yield = {yield_pred['estimated_yield']:.2f} units
+                """)
+                
+                st.markdown("**Harvest Date Prediction:**")
+                st.code(f"""
+Average Growth Progress: {yield_pred['average_growth_progress']:.1f}%
+Remaining Growth: {100 - yield_pred['average_growth_progress']:.1f}%
+
+Growth Rate: 2% per simulation step
+Days to Harvest = Remaining Growth / Growth Rate
+                = {100 - yield_pred['average_growth_progress']:.1f} / 2
+                = {yield_pred['days_to_harvest']} steps
+
+Expected Harvest Step: {yield_pred['estimated_harvest_step']}
+                """)
             
             col1, col2 = st.columns(2)
             
