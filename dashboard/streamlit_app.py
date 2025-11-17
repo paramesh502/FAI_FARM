@@ -377,7 +377,7 @@ def main():
         st.markdown('<div class="section-header">Weather & Yield Forecast</div>', unsafe_allow_html=True)
         
         # Weather Calculation Explanation
-        with st.expander("📊 Weather Simulation Methodology", expanded=False):
+        with st.expander("Weather Simulation Methodology", expanded=False):
             st.markdown("### How Weather Data is Generated")
             st.markdown("""
             **Weather is simulated internally** (not from external API) with realistic variations:
@@ -542,7 +542,7 @@ Wind Speed Update:
             weather = st.session_state.model.weather
             
             # Calculation Methodology Section
-            with st.expander("📊 Calculation Methodology - How Numbers Are Computed", expanded=False):
+            with st.expander("Calculation Methodology - How Numbers Are Computed", expanded=False):
                 st.markdown("### Stress Detection Criteria")
                 
                 col_a, col_b = st.columns(2)
@@ -675,7 +675,7 @@ Health Score = (({stress['total_crops']} - {stress['water_stressed_count'] + str
             st.markdown('<div class="section-header">Yield Prediction Details</div>', unsafe_allow_html=True)
             
             # Yield Calculation Methodology
-            with st.expander("📊 Yield Calculation Methodology", expanded=False):
+            with st.expander("Yield Calculation Methodology", expanded=False):
                 st.markdown("### How Yield is Estimated")
                 
                 # Get actual counts for explanation
