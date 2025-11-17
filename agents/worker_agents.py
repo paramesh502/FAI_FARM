@@ -279,7 +279,7 @@ class DroneMonitoringAgent(WorkerAgent):
     def __init__(self, unique_id, model):
         """Initialize the drone monitoring agent."""
         super().__init__(unique_id, model, "drone")
-        self.scan_interval = 10  # Scan every N steps
+        self.scan_interval = 5  # Scan every 5 steps (increased from 10 for more frequent disease detection)
         self.last_scan_step = 0
         self.scan_index = 0  # Track which cells have been scanned
     
@@ -325,10 +325,10 @@ class DroneMonitoringAgent(WorkerAgent):
         
         # Calculate disease probability
         # Base probability increases with low water and growth stage
-        base_prob = 0.1
-        water_factor = (1.0 - water_level) * 0.3
-        growth_factor = (growth_progress / 100.0) * 0.2
-        random_factor = random.random() * 0.2
+        base_prob = 0.15  # Increased from 0.1 to make disease more common
+        water_factor = (1.0 - water_level) * 0.4  # Increased from 0.3
+        growth_factor = (growth_progress / 100.0) * 0.3  # Increased from 0.2
+        random_factor = random.random() * 0.3  # Increased from 0.2
         
         disease_probability = base_prob + water_factor + growth_factor + random_factor
         
@@ -339,7 +339,7 @@ class DroneMonitoringAgent(WorkerAgent):
         )
         
         # Transition to diseased if probability exceeds threshold
-        if disease_probability > 0.7:
+        if disease_probability > 0.6:  # Lowered from 0.7 to make disease trigger easier
             self.model.set_cell_state(cell_pos, CellState.DISEASED)
             
             # Publish disease alert
